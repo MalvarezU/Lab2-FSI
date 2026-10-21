@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: droolrules
+  ai:
+    # Proveedor de modelos deshabilitado por defecto: al no seleccionar "openai",
+    # los auto-configs de Spring AI no crean beans y la app arranca sin API key.
+    # Para habilitar la capa de IA activar el profile "ai" (application-ai.yml).
+    model:
+      chat: none
+      embedding: none
+      image: none
+      moderation: none
+      audio:
+        speech: none
+        transcription: none
+    openai:
+      chat:
+        options:
+          model: gpt-4o-mini
+
+app:
+  ai:
+    enabled: false

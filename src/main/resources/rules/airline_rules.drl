@@ -1,0 +1,123 @@
+package rules.airline
+
+import com.udea.droolrules.airline.model.AirlineRequest
+import com.udea.droolrules.airline.model.AirlineDecision
+import com.udea.droolrules.airline.model.Flight
+
+// ============================================================================
+// Reglas de negocio de la aerolínea (Laboratorio 2 - FSI 2026)
+// ============================================================================
+
+// Regla 4 (salience 100): se evalúa ANTES que la regla 1 para que un equipaje
+// con sobrepeso anule la elegibilidad de ascenso antes de que la regla 1 dispare.
+rule "DenyUpgradeForOverweightLuggage"
+    salience 100
+    when
+        $request : AirlineRequest(luggageWeightKg > 23)
+        $decision : AirlineDecision(upgradeEligible == true)
+    then
+        modify($decision) {
+            setUpgradeEligible(false)
+        };
+        $decision.getAppliedRules().add("DenyUpgradeForOverweightLuggage");
+end
+
+// Regla 1: Ascenso a clase ejecutiva para Gold/Platinum con retraso > 60 min.
+rule "UpgradeToBusinessClassForFrequentFlyersWithDelays"
+    salience 50
+    when
+        $request : AirlineRequest((passenger.membershipTier == "Gold" || passenger.membershipTier == "Platinum"), flight.delayMinutes > 60)
+        $decision : AirlineDecision(upgradeEligible == true)
+    then
+        $decision.setUpgradedToBusiness(true);
+        $decision.getAppliedRules().add("UpgradeToBusinessClassForFrequentFlyersWithDelays");
+end
+
+// Regla 2: Check-in prioritario para pasajeros mayores de 65 años.
+rule "PriorityCheckInForSeniors"
+    when
+        $request : AirlineRequest(passenger.age > 65)
+        $decision : AirlineDecision()
+    then
+        $decision.setPriorityCheckIn(true);
+        $decision.getAppliedRules().add("PriorityCheckInForSeniors");
+end
+
+// Regla 3: Descuento del 10% para equipaje menor a 10 kg.
+rule "DiscountForLightLuggage"
+    when
+        $request : AirlineRequest(luggageWeightKg < 10)
+        $decision : AirlineDecision()
+    then
+        $decision.setDiscountPercent(10.0);
+        $decision.getAppliedRules().add("DiscountForLightLuggage");
+end
+
+// Regla 5: Asigna asiento de salida de emergencia a jóvenes entre 18 y 40 años
+// con preferencia "Any" y asientos disponibles, y lo marca como ocupado.
+// El vuelo se inserta como hecho independiente para poder aplicar modify().
+rule "AssignEmergencyExitSeatToYoungAdults"
+    when
+        $request : AirlineRequest(passenger.age >= 18, passenger.age <= 40, seatPreference == "Any")
+        $flight : Flight(emergencyExitSeatsAvailable > 0)
+        $decision : AirlineDecision(emergencyExitSeatAssigned == false)
+    then
+        modify($decision) {
+            setEmergencyExitSeatAssigned(true)
+        };
+        modify($flight) {
+            setEmergencyExitSeatsAvailable($flight.getEmergencyExitSeatsAvailable() - 1)
+        };
+        $decision.getAppliedRules().add("AssignEmergencyExitSeatToYoungAdults");
+end
+
+// Regla 6: Compensación de $200 por retrasos extremos (> 180 minutos).
+rule "CompensationForExtremeDelays"
+    when
+        $request : AirlineRequest(flight.delayMinutes > 180)
+        $decision : AirlineDecision()
+    then
+        $decision.setCompensationAmount(200.0);
+        $decision.getAppliedRules().add("CompensationForExtremeDelays");
+end
+
+// Regla 7: Puntos de lealtad extra para membresías distintas de Basic en vuelos > 5 h.
+rule "ExtraLoyaltyPointsForLongFlights"
+    when
+        $request : AirlineRequest(passenger.membershipTier != "Basic", flight.durationHours > 5)
+        $decision : AirlineDecision()
+    then
+        $decision.setLoyaltyPoints(500);
+        $decision.getAppliedRules().add("ExtraLoyaltyPointsForLongFlights");
+end
+
+// Regla 8: Restringe equipaje mayor a 15 kg en vuelos de menos de 2 horas.
+rule "RestrictLuggageOnShortFlights"
+    when
+        $request : AirlineRequest(luggageWeightKg > 15, flight.durationHours < 2)
+        $decision : AirlineDecision()
+    then
+        $decision.setLuggageAllowed(false);
+        $decision.getAppliedRules().add("RestrictLuggageOnShortFlights");
+end
+
+// Regla 9: Acceso al salón VIP para miembros Platinum.
+rule "VipLoungeAccessForPlatinumMembers"
+    when
+        $request : AirlineRequest(passenger.membershipTier == "Platinum")
+        $decision : AirlineDecision()
+    then
+        $decision.setVipLoungeAccess(true);
+        $decision.getAppliedRules().add("VipLoungeAccessForPlatinumMembers");
+end
+
+// Regla 10: Asiento preferencial para familias que viajan con niños y sin
+// preferencia específica de asiento.
+rule "PreferentialSeatForFamilies"
+    when
+        $request : AirlineRequest(passenger.travellingWithChildren == true, seatPreference == "Any")
+        $decision : AirlineDecision()
+    then
+        $decision.setPreferentialFamilySeat(true);
+        $decision.getAppliedRules().add("PreferentialSeatForFamilies");
+end

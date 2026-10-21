@@ -1,0 +1,195 @@
+{
+  "info": {
+    "name": "Lab2 FSI2026 - Reglas de credito (Drools)",
+    "description": "Pruebas de las 6 reglas de credito definidas en credit_rules.drl. Endpoint REST: POST /credit/api/evaluate",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Test 1 - RejectLowCreditScore",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Ana Gomez\",\n    \"age\": 25,\n    \"monthlyIncome\": 2000.0,\n    \"creditScore\": 450\n  },\n  \"creditType\": \"personal\",\n  \"requestAmount\": 10000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test 2 - RejectUnderAge (validacion de Spring)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Luis Martinez\",\n    \"age\": 16,\n    \"monthlyIncome\": 2000.0,\n    \"creditScore\": 700\n  },\n  \"creditType\": \"personal\",\n  \"requestAmount\": 10000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test 3 - PersonalCreditApproval tasa baja",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Juan Perez\",\n    \"age\": 30,\n    \"monthlyIncome\": 2000.0,\n    \"creditScore\": 750\n  },\n  \"creditType\": \"personal\",\n  \"requestAmount\": 15000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test 4 - PersonalCreditApproval tasa alta",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Maria Lopez\",\n    \"age\": 28,\n    \"monthlyIncome\": 1500.0,\n    \"creditScore\": 600\n  },\n  \"creditType\": \"personal\",\n  \"requestAmount\": 20000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test 5 - MortgageCreditApproval tasa baja",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Carlos Garcia\",\n    \"age\": 35,\n    \"monthlyIncome\": 4000.0,\n    \"creditScore\": 800\n  },\n  \"creditType\": \"hipotecario\",\n  \"requestAmount\": 150000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test 6 - MortgageCreditApproval tasa alta",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Sofia Ramirez\",\n    \"age\": 40,\n    \"monthlyIncome\": 3500.0,\n    \"creditScore\": 650\n  },\n  \"creditType\": \"hipotecario\",\n  \"requestAmount\": 200000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test 7 - AutoCreditApproval tasa baja",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Pedro Sanchez\",\n    \"age\": 32,\n    \"monthlyIncome\": 2500.0,\n    \"creditScore\": 720\n  },\n  \"creditType\": \"automotriz\",\n  \"requestAmount\": 30000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test 8 - AutoCreditApproval tasa alta",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Laura Torres\",\n    \"age\": 29,\n    \"monthlyIncome\": 1800.0,\n    \"creditScore\": 600\n  },\n  \"creditType\": \"automotriz\",\n  \"requestAmount\": 40000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test 9 - RejectInvalidCreditType",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer\": {\n    \"name\": \"Diego Morales\",\n    \"age\": 27,\n    \"monthlyIncome\": 2000.0,\n    \"creditScore\": 650\n  },\n  \"creditType\": \"hipotecario\",\n  \"requestAmount\": 100000.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/credit/api/evaluate",
+          "host": ["{{baseUrl}}"],
+          "path": ["credit", "api", "evaluate"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

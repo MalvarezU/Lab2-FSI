@@ -1,0 +1,169 @@
+{
+  "info": {
+    "name": "Lab2 FSI2026 - Reglas de aerolinea (Drools)",
+    "description": "Pruebas de las 10 reglas de negocio de la aerolineaa definidas en airline_rules.drl. Endpoint REST: POST /airline/api/evaluate",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Regla 1 - UpgradeToBusinessClassForFrequentFlyersWithDelays",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Ana\", \"age\": 35, \"membershipTier\": \"Gold\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV101\", \"delayMinutes\": 90, \"durationHours\": 3.0, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 12.0,\n  \"seatPreference\": \"Window\",\n  \"basePrice\": 500.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 2 - PriorityCheckInForSeniors",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Dortensia\", \"age\": 70, \"membershipTier\": \"Basic\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV102\", \"delayMinutes\": 0, \"durationHours\": 1.0, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 5.0,\n  \"seatPreference\": \"Any\",\n  \"basePrice\": 300.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 3 - DiscountForLightLuggage",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Eli\", \"age\": 28, \"membershipTier\": \"Basic\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV103\", \"delayMinutes\": 0, \"durationHours\": 3.0, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 8.0,\n  \"seatPreference\": \"Any\",\n  \"basePrice\": 300.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 4 - DenyUpgradeForOverweightLuggage",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Fran\", \"age\": 45, \"membershipTier\": \"Gold\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV104\", \"delayMinutes\": 90, \"durationHours\": 3.0, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 30.0,\n  \"seatPreference\": \"Any\",\n  \"basePrice\": 500.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 5 - AssignEmergencyExitSeatToYoungAdults",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Gustavo\", \"age\": 25, \"membershipTier\": \"Basic\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV105\", \"delayMinutes\": 0, \"durationHours\": 3.0, \"emergencyExitSeatsAvailable\": 2 },\n  \"luggageWeightKg\": 10.0,\n  \"seatPreference\": \"Any\",\n  \"basePrice\": 300.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 6 - CompensationForExtremeDelays",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Ivan\", \"age\": 50, \"membershipTier\": \"Silver\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV106\", \"delayMinutes\": 200, \"durationHours\": 4.0, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 12.0,\n  \"seatPreference\": \"Aisle\",\n  \"basePrice\": 400.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 7 - ExtraLoyaltyPointsForLongFlights",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Julia\", \"age\": 33, \"membershipTier\": \"Silver\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV107\", \"delayMinutes\": 0, \"durationHours\": 6.0, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 12.0,\n  \"seatPreference\": \"Window\",\n  \"basePrice\": 700.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 8 - RestrictLuggageOnShortFlights",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Luna\", \"age\": 27, \"membershipTier\": \"Basic\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV108\", \"delayMinutes\": 0, \"durationHours\": 1.5, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 20.0,\n  \"seatPreference\": \"Any\",\n  \"basePrice\": 200.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 9 - VipLoungeAccessForPlatinumMembers",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Mara\", \"age\": 48, \"membershipTier\": \"Platinum\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV109\", \"delayMinutes\": 0, \"durationHours\": 3.0, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 10.0,\n  \"seatPreference\": \"Window\",\n  \"basePrice\": 500.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Regla 10 - PreferentialSeatForFamilies",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Nico\", \"age\": 38, \"membershipTier\": \"Basic\", \"travellingWithChildren\": true },\n  \"flight\": { \"flightNumber\": \"AV110\", \"delayMinutes\": 0, \"durationHours\": 3.0, \"emergencyExitSeatsAvailable\": 0 },\n  \"luggageWeightKg\": 12.0,\n  \"seatPreference\": \"Any\",\n  \"basePrice\": 300.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Combinado - Platinum 70 con retraso extremo",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"passenger\": { \"name\": \"Pablo\", \"age\": 70, \"membershipTier\": \"Platinum\", \"travellingWithChildren\": false },\n  \"flight\": { \"flightNumber\": \"AV111\", \"delayMinutes\": 200, \"durationHours\": 6.0, \"emergencyExitSeatsAvailable\": 1 },\n  \"luggageWeightKg\": 8.0,\n  \"seatPreference\": \"Any\",\n  \"basePrice\": 800.0\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/airline/api/evaluate", "host": ["{{baseUrl}}"], "path": ["airline", "api", "evaluate"] }
+      },
+      "response": []
+    }
+  ]
+}

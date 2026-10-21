@@ -1,0 +1,21 @@
+# Profile "ai": habilita la capa de explicacion con OpenAI.
+# Uso:
+#   OPENAI_API_KEY=sk-... ./mvnw spring-boot:run -Dspring-boot.run.profiles=ai
+# Equivalente con el jar:
+#   OPENAI_API_KEY=sk-... java -jar target/droolrules-0.0.1-SNAPSHOT.jar --spring.profiles.active=ai
+spring:
+  ai:
+    model:
+      chat: openai
+      embedding: openai
+      image: openai
+      moderation: openai
+      audio:
+        speech: openai
+        transcription: openai
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+
+app:
+  ai:
+    enabled: true
